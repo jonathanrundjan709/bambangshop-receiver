@@ -1,7 +1,7 @@
 use std::thread;
 
+use log::warn;
 use rocket::http::Status;
-use rocket::log;
 use rocket::serde::json::to_string;
 use rocket::tokio;
 
@@ -32,7 +32,7 @@ impl NotificationService {
             .header("Accept", "application/json")
             .body(to_string(&payload).unwrap())
             .send().await;
-        log::warn!("Sent subscribe request to: {}", request_url);
+        warn!("Sent subscribe request to: {}", request_url);
 
         return match request {
             Ok(f) => match f.json::<SubscriberRequest>().await {
@@ -69,7 +69,7 @@ impl NotificationService {
             .header("Content-Type", "application/json")
             .header("Accept", "application/json")
             .send().await;
-        log::warn!("Sent unsubscribe request to: {}", request_url);
+        warn!("Sent unsubscribe request to: {}", request_url);
 
         return match request {
             Ok(f) => match f.json::<SubscriberRequest>().await {
